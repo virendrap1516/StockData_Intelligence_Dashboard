@@ -1,12 +1,21 @@
+# render.yaml - Render Deployment Configuration
+
 services:
   - type: web
     name: StockData_Intelligence_Dashboard
     env: python
-    region: Virginia         
-    branch: main
+    region: Virginia  # Choose your preferred region
     plan: free
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT
+    buildCommand: |
+      python -m venv venv
+      venv\Scripts\activate || source venv/bin/activate
+      pip install --upgrade pip
+      pip install -r backend/requirements.txt
+      # Initialize database if not exists
+      python backend/data_prep.py
+    startCommand: |
+      venv\Scripts\activate || source venv/bin/activate
+      uvicorn backend.app:app --host 0.0.0.0 --port 10000
     envVars:
-      - key: DATABASE_URL
-        value: sqlite:///./backend/data/stocks.db
+      - key: PYTHON_VERSION
+        value: 3.11.14
