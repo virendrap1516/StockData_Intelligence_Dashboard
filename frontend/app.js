@@ -1,5 +1,5 @@
 // Stock Dashboard Frontend Application
-const API_BASE = 'http://127.0.0.1:8000';
+const API_BASE = 'https://stockdata-intelligence.onrender.com';
 
 let chart = null;
 let currentSymbol = null;
